@@ -1,11 +1,14 @@
-import sys, os
+# Importing libs
+import argparse
 import arff
 
-k = int(sys.argv[1])
-w = sys.argv[2] in ["weighted", "w", "true"]
-distance = sys.argv[3]
-datasets = [sys.argv[4], sys.argv[5]]
+# Setting command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-k', required=True, type=int, help='The k value for the k-NN')
+parser.add_argument('-w', action='store_true', help='If the distance should be weighted or not')
+parser.add_argument('-datasets', nargs=2, required=True, help='The datasets arff files')
+parser.add_argument('-distance', required=True, choices=['euclidean', 'vdm', 'hvdm'], help='The type of distance used for calculations')
 
-data = arff.load(open('datasets/cm1.arff', 'rb'))
+args = parser.parse_args()
 
-print data
+print args.distance
