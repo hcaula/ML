@@ -14,20 +14,20 @@ k = arguments.k
 distance = getattr(distances, arguments.distance)
 dataset = arff.load(open(arguments.d, 'rb'))['data']
 
-## Shuffles dataset if it's said so
+# Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)
 ksize = dsize/kfold
 
-## For each division (k-fold cross-validation)
+# For each division (k-fold cross-validation)
 evaluations = []
 for i in range(kfold + 1):
     begin_index = i * ksize
     end_index = min((begin_index + ksize), dsize-1)
 
-    ## If the k-fold divides the training set perfectly, we shouldn't run the last k-fold
+    # If the k-fold divides the training set perfectly, we shouldn't run the last k-fold
     if end_index > begin_index:
         rights = 0
 
@@ -38,16 +38,17 @@ for i in range(kfold + 1):
             dists = []
             tests = []
             for t in training: 
+                # Calculating the distance between the evaluated element to the training set
                 dist = distance(e, t)
                 t_class = t[len(t)-1] in ['True', 'true']
 
                 obj = {'distance': dist, 'class': t_class}
                 dists.append(obj)
 
-            # Sorts the distances and gets the k-nearest neighbours
+            # Sorts the distances to get the k-nearest neighbours
             dists.sort(key=lambda x: x['distance'])
 
-            ## Checking if the last fold has less elements the chosen k
+            # Checking if the last fold has less elements the chosen k
             end_index = min(k, len(dists)-1)
             neighbours = dists[0:end_index]
 
