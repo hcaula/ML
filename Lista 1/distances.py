@@ -1,8 +1,10 @@
 import math
 
 def euclidean(x, y):
+    size = len(x)
     sum = 0
-    for attr in x: sum += pow(x[attr] - y[attr], 2)
+    for i in range(size): 
+        if(type(x[i]) is int or type(x[i]) is float): sum += pow((x[i] - y[i]), 2)
     return math.sqrt(sum)
     
 

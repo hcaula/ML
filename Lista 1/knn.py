@@ -14,10 +14,11 @@ parser.add_argument('-w', action='store_true', help='If the distance should be w
 parser.add_argument('-distance', default='euclidean', choices=['euclidean', 'vdm', 'hvdm'], help='The type of distance used for calculations')
 parser.add_argument('-kfold', type=int, default=5, help='The k value for the k-fold cross-validation')
 parser.add_argument('-shuffle', action='store_true', help='If the dataset should be randomly shuffled before k-fold')
+args = parser.parse_args()
 
 # Getting the arguments
-args = parser.parse_args()
 kfold = args.kfold
+k = args.k
 distance = getattr(distances, args.distance)
 dataset = arff.load(open(args.d, 'rb'))['data']
 
@@ -36,6 +37,17 @@ for i in range(kfold + 1):
     evaluation = dataset[begin_index: end_index]
     training = dataset[0:begin_index] + dataset[end_index:dsize-1]
 
+    test = []
     for e in evaluation:
         dists = []
-        
+        tests = []
+        for t in training: 
+            dist = distance(e, t)
+            t_class = t[len(t)-1] in ['True', 'true']
+
+            obj = {'distance': dist, 'class': t_class}
+            dists.append(obj)
+
+        # Sorts the distances and gets the k-nearest neighbours
+        dists.sort(key=lambda x: x['distance'])
+        neighbours = dists[0:k]
