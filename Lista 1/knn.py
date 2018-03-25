@@ -1,18 +1,18 @@
 # External libs
 import argparse
-import arff
 from random import shuffle
 
 # Custom libs
 import distances
 import args
+from data_reader import read
 
 # Getting the arguments
 arguments = args.args
 kfold = arguments.kfold
 k = arguments.k
 distance = getattr(distances, arguments.distance)
-dataset = arff.load(open(arguments.d, 'rb'))['data']
+dataset = read(arguments.d)
 
 # Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
