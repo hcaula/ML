@@ -19,16 +19,16 @@ parser.add_argument('-shuffle', action='store_true', help='If the dataset should
 args = parser.parse_args()
 kfold = args.kfold
 distance = getattr(distances, args.distance)
-
 dataset = arff.load(open(args.d, 'rb'))['data']
 
-## Shuffles dataset if is said so
+## Shuffles dataset if it's said so
 if (args.shuffle): shuffle(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)
 ksize = dsize/kfold
 
+## For each division (k-fold cross-validation)
 for i in range(kfold + 1):
     begin_index = i * ksize
     end_index = min((begin_index + ksize), dsize-1)
@@ -36,8 +36,6 @@ for i in range(kfold + 1):
     evaluation = dataset[begin_index: end_index]
     training = dataset[0:begin_index] + dataset[end_index:dsize-1]
 
-    print ''
-    print ''
-    print "K FOLD:"
     for e in evaluation:
-        print e[len(e)-1]
+        dists = []
+        
