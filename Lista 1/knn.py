@@ -23,6 +23,7 @@ ksize = dsize/kfold
 
 # For each division (k-fold cross-validation)
 evaluations = []
+test = {}
 for i in range(kfold + 1):
     begin_index = i * ksize
     end_index = min((begin_index + ksize), dsize-1)
@@ -40,9 +41,7 @@ for i in range(kfold + 1):
             for t in training: 
                 # Calculating the distance between the evaluated element to the training set
                 dist = distance(e, t)
-                t_class = t[len(t)-1] in ['True', 'true']
-
-                obj = {'distance': dist, 'class': t_class}
+                obj = {'distance': dist, 'class': str(t[len(t)-1])}
                 dists.append(obj)
 
             # Sorts the distances to get the k-nearest neighbours
@@ -53,18 +52,16 @@ for i in range(kfold + 1):
             neighbours = dists[0:end_index]
 
             # Counts the number of classes for the k-nearests neighbours
-            pos = 0
-            neg = 0
+            classes = {}
             for n in neighbours:
-                if(n['class']): pos += 1
-                else: neg += 1
+                if(n['class'] in classes): classes[n['class']] += 1
+                else: classes[n['class']] = 1
             
-            # If there are more positives than negatives, set prediction as True
-            prediction = False
-            if(pos >= neg): prediction = True
+            # Sets the prediction to be the class with most neighbours
+            prediction = max(classes, key=classes.get)
             
             # Checks if prediction was correct
-            real_class = e[len(e)-1] in ['True', 'true']
+            real_class = e[len(e)-1]
             if(real_class == prediction): rights += 1
 
         print 'K-Fold: ' + str(i)
