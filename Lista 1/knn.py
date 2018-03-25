@@ -5,25 +5,17 @@ from random import shuffle
 
 # Custom libs
 import distances
-
-# Setting command-line arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('-d', required=True, help='The dataset file in .arff')
-parser.add_argument('-k', default=2, type=int, help='The k value for the k-NN')
-parser.add_argument('-w', action='store_true', help='If the distance should be weighted or not')
-parser.add_argument('-distance', default='euclidean', choices=['euclidean', 'vdm', 'hvdm'], help='The type of distance used for calculations')
-parser.add_argument('-kfold', type=int, default=5, help='The k value for the k-fold cross-validation')
-parser.add_argument('-shuffle', action='store_true', help='If the dataset should be randomly shuffled before k-fold')
-args = parser.parse_args()
+import args
 
 # Getting the arguments
-kfold = args.kfold
-k = args.k
-distance = getattr(distances, args.distance)
-dataset = arff.load(open(args.d, 'rb'))['data']
+arguments = args.args
+kfold = arguments.kfold
+k = arguments.k
+distance = getattr(distances, arguments.distance)
+dataset = arff.load(open(arguments.d, 'rb'))['data']
 
 ## Shuffles dataset if it's said so
-if (args.shuffle): shuffle(dataset)
+if (arguments.shuffle): shuffle(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)
@@ -71,8 +63,6 @@ for i in range(kfold + 1):
             if(pos >= neg): prediction = True
             
             # Checks if prediction was correct
-            
-
             real_class = e[len(e)-1] in ['True', 'true']
             if(real_class == prediction): rights += 1
 
