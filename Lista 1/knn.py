@@ -22,8 +22,6 @@ dsize = len(dataset)
 ksize = dsize/kfold
 
 # For each division (k-fold cross-validation)
-evaluations = []
-test = {}
 for i in range(kfold + 1):
     begin_index = i * ksize
     end_index = min((begin_index + ksize), dsize-1)
@@ -37,8 +35,8 @@ for i in range(kfold + 1):
 
         for e in evaluation:
             dists = []
-            tests = []
             for t in training: 
+
                 # Calculating the distance between the evaluated element to the training set
                 dist = distance(e, t)
                 obj = {'distance': dist, 'class': str(t[len(t)-1])}
