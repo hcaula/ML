@@ -1,6 +1,7 @@
 # Importing libs
 import argparse
 import arff
+import distances
 
 # Setting command-line arguments
 parser = argparse.ArgumentParser()
@@ -12,10 +13,11 @@ parser.add_argument('-kfold', type=int, default=5, help='The k value for the k-f
 
 # Getting the arguments
 args = parser.parse_args()
-
-# k-NN algorithm
 dataset = arff.load(open(args.d, 'rb'))['data']
 kfold = args.kfold
+distance = getattr(distances, args.distance)
+
+# k-NN algorithm
 dsize = len(dataset)
 ksize = dsize/kfold
 
