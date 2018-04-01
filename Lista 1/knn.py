@@ -6,6 +6,7 @@ from random import shuffle
 import distances
 import args
 from data_reader import read
+from precalcs import precalcs
 
 # Getting the arguments
 arguments = args.args
@@ -18,7 +19,7 @@ w = arguments.w
 # Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
 
-if (arguments.distance != "euclidean"): distances.precalcs(dataset)
+if (arguments.distance != "euclidean"): precalcs(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)
