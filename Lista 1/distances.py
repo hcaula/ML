@@ -1,7 +1,7 @@
 import math
 
 def euclidean(x, y):
-    size = len(x)
+    size = len(x) - 1
     sum = 0
     for i in range(size): 
         if((type(x[i]) is int or type(x[i]) is float) and (type(y[i]) is int or type(y[i]) is float)): 
@@ -9,7 +9,21 @@ def euclidean(x, y):
     return math.sqrt(sum)
 
 def vdm(x, y):
-    return 2
+    size = len(x) - 1
+    total_sum = 0
+    q = 1
+    for i in range(size): 
+        partial_sum = 0
+        x_attr = x[i]
+        y_attr = y[i]
+        for c in probabilities:
+            prob = probabilities[c][i]
+            sub = abs(prob[x_attr] - prob[y_attr])
+            partial_sum += (1 - sub/q)
+
+        total_sum += partial_sum
+    
+    return math.sqrt(total_sum)
 
 probabilities = {}
 def precalc_partials(dataset):
@@ -57,3 +71,5 @@ def precalc_partials(dataset):
                 probabilities[c][count][attr] = p/t
             
             count += 1
+
+    # print probabilities
