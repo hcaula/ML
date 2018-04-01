@@ -1,5 +1,4 @@
 # External libs
-import argparse
 from random import shuffle
 
 # Custom libs
