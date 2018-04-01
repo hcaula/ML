@@ -18,7 +18,7 @@ w = arguments.w
 # Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
 
-if (arguments.distance != "euclidean"): distances.precalc_partials(dataset)
+if (arguments.distance != "euclidean"): distances.precalcs(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)

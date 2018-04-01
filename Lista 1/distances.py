@@ -1,4 +1,5 @@
 import math
+import sys
 
 def euclidean(x, y):
     size = len(x) - 1
@@ -35,10 +36,26 @@ def vdm(x, y):
     # Returns the square root of the total sum   
     return math.sqrt(total_sum)
 
+def hvdm(x, y):
+    return 2
+
+
 probabilities = {}
-def precalc_partials(dataset):
+ranges = []
+def precalcs(dataset):
     partials = {}
     totals = []
+
+    sample = dataset[0]
+    size = len(sample) - 1
+    for i in range(size):
+        if(type(sample[i]) is int or type(sample[i]) is float): 
+            ranges.append({
+                "big": max(map(lambda x: x[i], dataset)),
+                "small": min(map(lambda x: x[i], dataset))
+            })
+        else: ranges.append({})
+
 
     # Calculates each partial sum for each class
     for d in dataset:
