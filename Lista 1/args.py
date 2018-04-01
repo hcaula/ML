@@ -2,7 +2,7 @@ import argparse
 
 # Setting command-line arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', required=True, help='The dataset file in .arff')
+parser.add_argument('-d', default="datasets/cm1.arff", help='The dataset file in .arff')
 parser.add_argument('-k', default=2, type=int, help='The k value for the k-NN')
 parser.add_argument('-w', action='store_true', help='If the distance should be weighted or not')
 parser.add_argument('-distance', default='euclidean', choices=['euclidean', 'vdm', 'hvdm'], help='The type of distance used for calculations')
