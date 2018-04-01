@@ -18,7 +18,7 @@ w = arguments.w
 # Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
 
-if (arguments.distance != "euclidean"): distances.precalc_probs(dataset)
+if (arguments.distance != "euclidean"): distances.precalc_partials(dataset)
 
 # k-NN algorithm
 dsize = len(dataset)
@@ -41,7 +41,7 @@ for i in range(kfold + 1):
             for t in training: 
 
                 # Calculating the distance between the evaluated element to the training set
-                dist = distance(e, t, training)
+                dist = distance(e, t)
                 if(w):
                     p = pow(dist, 2)
                     if(p>0): weight = 1/p
