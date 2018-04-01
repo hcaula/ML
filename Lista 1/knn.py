@@ -13,6 +13,7 @@ kfold = arguments.kfold
 k = arguments.k
 distance = getattr(distances, arguments.distance)
 dataset = read(arguments.d)
+w = arguments.w
 
 # Shuffles dataset if it's said so
 if (arguments.shuffle): shuffle(dataset)
@@ -39,7 +40,15 @@ for i in range(kfold + 1):
 
                 # Calculating the distance between the evaluated element to the training set
                 dist = distance(e, t)
-                obj = {'distance': dist, 'class': str(t[len(t)-1])}
+                if(w):
+                    p = pow(dist, 2)
+                    if(p>0): weight = 1/p
+                    else: weight = 1/0.001
+                else: weight = 1
+
+                new_dist = weight * dist
+
+                obj = {'distance': new_dist, 'class': str(t[len(t)-1])}
                 dists.append(obj)
 
             # Sorts the distances to get the k-nearest neighbours
