@@ -10,30 +10,29 @@ def euclidean(x, y, dataset):
 
 def vdm(x, y, dataset):
     return 2
-    # size = len(x)
-    # sum = 0
-    # for i in range(size): 
-    #     if(not hasattr(probabilites, x[i])):
-    #         calculate_probability
 
-probabilites = {}
+probabilities = {}
 def precalc_probs(dataset):
-    print "Dataset length: " + str(len(dataset))
-    print ""
+
     # Gets the classes
-    probs = {}
+    totals = {}
     for d in dataset:
         c = d[len(d)-1]
-        if(c not in probs): probs[c] = []
+        if(c not in totals): 
+            totals[c] = []
+            probabilities[c] = []
         
         count = 0
         for i in d:
             if (count < len(d)-1):
-                if(len(probs[c]) <= count): probs[c].append({})
-                if(i not in probs[c][count]): probs[c][count][i] = 1
-                else: probs[c][count][i] += 1
+                if(len(totals[c]) <= count): 
+                    totals[c].append({})
+                    probabilities[c].append({})
+
+                if(i not in totals[c][count]): 
+                    totals[c][count][i] = 1
+                    probabilities[c][count][i] = 0
+                else: totals[c][count][i] += 1
             count += 1
 
-    print probs
-
-    
+    print totals
