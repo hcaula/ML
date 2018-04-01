@@ -18,27 +18,34 @@ def vdm(x, y):
 
     # For each attribute
     for i in range(size): 
-        partial_sum = 0
-        x_attr = x[i]
-        y_attr = y[i]
-
-        # For each class
-        for c in probabilities:
-            # Main subtraction
-            prob = probabilities[c][i]
-            sub = abs(prob[x_attr] - prob[y_attr])
-            normalized = (1 - sub/q)
-            
-            partial_sum += normalized
-
-        total_sum += partial_sum
+        total_sum += little_vdm(x[i], y[i], i, q)
 
     # Returns the square root of the total sum   
     return math.sqrt(total_sum)
 
 def hvdm(x, y):
-    return 2
+    size = len(x) - 1
+    total_sum = 0
 
+    # The normalization constant
+    q = 1
+
+    count = 0
+    for i in range(size):
+        if((type(x[i]) is int or type(x[i]) is float) and (type(y[i]) is int or type(y[i]) is float)): 
+            total_sum += abs(x[i] - y[i]) / (ranges[count]["max"] - ranges[count]["min"])
+        else: total_sum += little_vdm(x[i], y[i], i, q)
+    return total_sum
+
+def little_vdm(xa, ya, attr, q):
+    partial_sum = 0
+    for c in probabilities:
+        prob = probabilities[c][attr]
+        sub = abs(prob[xa] - prob[ya])
+        normalized = (1 - sub/q)
+        
+        partial_sum += normalized
+    return partial_sum
 
 probabilities = {}
 ranges = []
@@ -51,8 +58,8 @@ def precalcs(dataset):
     for i in range(size):
         if(type(sample[i]) is int or type(sample[i]) is float): 
             ranges.append({
-                "big": max(map(lambda x: x[i], dataset)),
-                "small": min(map(lambda x: x[i], dataset))
+                "max": max(map(lambda x: x[i], dataset)),
+                "min": min(map(lambda x: x[i], dataset))
             })
         else: ranges.append({})
 
