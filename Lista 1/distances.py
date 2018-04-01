@@ -11,18 +11,28 @@ def euclidean(x, y):
 def vdm(x, y):
     size = len(x) - 1
     total_sum = 0
+
+    # The normalization constant
     q = 1
+
+    # For each attribute
     for i in range(size): 
         partial_sum = 0
         x_attr = x[i]
         y_attr = y[i]
+
+        # For each class
         for c in probabilities:
+            # Main subtraction
             prob = probabilities[c][i]
             sub = abs(prob[x_attr] - prob[y_attr])
-            partial_sum += (1 - sub/q)
+            normalized = (1 - sub/q)
+            
+            partial_sum += normalized
 
         total_sum += partial_sum
-    
+
+    # Returns the square root of the total sum   
     return math.sqrt(total_sum)
 
 probabilities = {}
@@ -71,5 +81,3 @@ def precalc_partials(dataset):
                 probabilities[c][count][attr] = p/t
             
             count += 1
-
-    # print probabilities
