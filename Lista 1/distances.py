@@ -18,9 +18,22 @@ def vdm(x, y, dataset):
 
 probabilites = {}
 def precalc_probs(dataset):
+    print "Dataset length: " + str(len(dataset))
+    print ""
     # Gets the classes
-    classes = []
+    probs = {}
     for d in dataset:
-        clss = d[len(d)-1]
-        if(clss not in classes): classes.append(clss)
+        c = d[len(d)-1]
+        if(c not in probs): probs[c] = []
+        
+        count = 0
+        for i in d:
+            if (count < len(d)-1):
+                if(len(probs[c]) <= count): probs[c].append({})
+                if(i not in probs[c][count]): probs[c][count][i] = 1
+                else: probs[c][count][i] += 1
+            count += 1
+
+    print probs
+
     
