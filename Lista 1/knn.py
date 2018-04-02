@@ -1,6 +1,7 @@
 # External libs
 from time import time
 from random import shuffle
+import numpy
 
 # Custom libs
 import distances
@@ -33,6 +34,7 @@ ksize = dsize/kfold
 
 # For each division (k-fold cross-validation)
 total_execution_time_begin = time()
+evaluations = []
 for i in range(kfold + 1):
     kfold_execution_time_begin = time()
 
@@ -86,6 +88,7 @@ for i in range(kfold + 1):
         kfold_execution_time_end = time()
         kfold_execution_time = kfold_execution_time_end - kfold_execution_time_begin
         percentage = float(rights)/len(evaluation) * 100
+        evaluations.append(percentage)
         print 'K-Fold: ' + str(i)
         print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
         print  'Execution time: ' + str(kfold_execution_time) + ' seconds'
@@ -93,6 +96,10 @@ for i in range(kfold + 1):
 
 
 
+mean = numpy.mean(evaluations)
+std = numpy.std(evaluations)
 total_execution_time_end = time()
 total_execution_time = total_execution_time_end - total_execution_time_begin
+print "Sucess rate mean: " + str(round(mean, 2)) + "%"
+print "Sucess rate standard deviation: " + str(std)
 print "Total execution time: " + str(total_execution_time) + ' seconds'
