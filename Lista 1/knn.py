@@ -1,4 +1,5 @@
 # External libs
+from time import time
 from random import shuffle
 
 # Custom libs
@@ -16,16 +17,25 @@ dataset = read(arguments.d)
 w = arguments.w
 
 # Shuffles dataset if it's said so
-if (arguments.shuffle): shuffle(dataset)
+precalcs_time_begin = time()
 
+if (arguments.shuffle): shuffle(dataset)
 if (arguments.distance != "euclidean"): precalcs(dataset)
+
+precalcs_time_endtime = time()
+precalcs_time = precalcs_time_endtime - precalcs_time_begin
+print "Pre-processing time: " + str(precalcs_time) + ' seconds'
+print ""
 
 # k-NN algorithm
 dsize = len(dataset)
 ksize = dsize/kfold
 
 # For each division (k-fold cross-validation)
+total_execution_time_begin = time()
 for i in range(kfold + 1):
+    kfold_execution_time_begin = time()
+
     begin_index = i * ksize
     end_index = min((begin_index + ksize), dsize-1)
 
@@ -73,5 +83,16 @@ for i in range(kfold + 1):
             real_class = e[len(e)-1]
             if(real_class == prediction): rights += 1
 
+        kfold_execution_time_end = time()
+        kfold_execution_time = kfold_execution_time_end - kfold_execution_time_begin
+        percentage = float(rights)/len(evaluation) * 100
         print 'K-Fold: ' + str(i)
-        print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation))
+        print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
+        print  'Execution time: ' + str(kfold_execution_time) + ' seconds'
+        print ""
+
+
+
+total_execution_time_end = time()
+total_execution_time = total_execution_time_end - total_execution_time_begin
+print "Total execution time: " + str(total_execution_time) + ' seconds'
