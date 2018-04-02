@@ -8,6 +8,7 @@ import distances
 import args
 from data_reader import read
 from precalcs import precalcs
+from precalcs import swap_array
 
 # Getting the arguments
 arguments = args.args
@@ -16,6 +17,7 @@ k = arguments.k
 distance = getattr(distances, arguments.distance)
 dataset = read(arguments.d)
 w = arguments.w
+swap = arguments.swap
 
 # Shuffles dataset if it's said so
 precalcs_time_begin = time()
@@ -25,6 +27,8 @@ if (arguments.distance != "euclidean"): precalcs(dataset)
 
 precalcs_time_endtime = time()
 precalcs_time = precalcs_time_endtime - precalcs_time_begin
+if(swap): swap_array(dataset)
+print dataset
 print "Pre-processing time: " + str(precalcs_time) + ' seconds'
 print ""
 

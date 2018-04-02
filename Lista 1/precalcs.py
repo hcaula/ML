@@ -57,3 +57,10 @@ def precalcs(dataset):
                 probabilities[c][count][attr] = p/t
             
             count += 1
+
+def swap_array(dataset):
+    for d in dataset:
+        length = len(d)-1
+        temp = d[length]
+        d[length] = d[0]
+        d[0] = temp
