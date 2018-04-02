@@ -38,7 +38,13 @@ def little_vdm(xa, ya, attr):
     partial_sum = 0
     for c in probabilities:
         prob = probabilities[c][attr]
-        sub = abs(prob[xa] - prob[ya])
+        
+        prob_x = 0
+        prob_y = 0
+        if(xa in prob): prob_x = prob[xa]
+        if(ya in prob): prob_y = prob[ya]
+
+        sub = abs(prob_x - prob_y)
         normalized = (1 - sub/q)
         
         partial_sum += normalized

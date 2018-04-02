@@ -28,7 +28,6 @@ if (arguments.distance != "euclidean"): precalcs(dataset)
 precalcs_time_endtime = time()
 precalcs_time = precalcs_time_endtime - precalcs_time_begin
 if(swap): swap_array(dataset)
-print dataset
 print "Pre-processing time: " + str(precalcs_time) + ' seconds'
 print ""
 
