@@ -10,80 +10,68 @@ from data_reader import read
 from precalcs import precalcs
 from precalcs import swap_array
 
-# Getting the arguments
-arguments = args.args
-kfold = arguments.kfold
-k = arguments.k
-distance = getattr(distances, arguments.distance)
-dataset = read(arguments.d)
-w = arguments.w
-swap = arguments.swap
+def knn():
+    # Getting the arguments
+    arguments = args.args
+    k = arguments.k
+    distance = getattr(distances, arguments.distance)
+    dataset = read(arguments.d)
+    w = arguments.w
+    swap = arguments.swap
 
-# Shuffles dataset if it's said so
-precalcs_time_begin = time()
+    # Shuffles dataset if it's said so
+    if (arguments.shuffle): shuffle(dataset)
+    if (arguments.distance != "euclidean"): precalcs(dataset)
+    if(swap): swap_array(dataset)
 
-if (arguments.shuffle): shuffle(dataset)
-if (arguments.distance != "euclidean"): precalcs(dataset)
+    # k-NN algorithm
+    dsize = len(dataset)
+    division = 0.6
 
-precalcs_time_endtime = time()
-precalcs_time = precalcs_time_endtime - precalcs_time_begin
-if(swap): swap_array(dataset)
-print "Pre-processing time: " + str(precalcs_time) + ' seconds'
-print ""
+    # For each division (k-fold cross-validation)
+    evaluations = []
 
-# k-NN algorithm
-dsize = len(dataset)
-ksize = dsize/kfold
-division = 0.6
+    training_size_index = int(dsize * division)
+    training = dataset[0 : training_size_index]
+    evaluation = dataset[training_size_index: dsize]
 
-# For each division (k-fold cross-validation)
-total_execution_time_begin = time()
-evaluations = []
+    rights = 0
+    for e in evaluation:
+        dists = []
+        for t in training: 
 
-training_size_index = int(len(dataset) * division)
-training = dataset[0 : training_size_index]
-evaluation = dataset[training_size_index: len(dataset)]
+            # Calculating the distance between the evaluated element to the training set
+            dist = distance(e, t)
+            if(w):
+                p = pow(dist, 2)
+                if(p>0): weight = 1/p
+                else: weight = 1/0.001
+            else: weight = 1
 
-rights = 0
-for e in evaluation:
-    dists = []
-    for t in training: 
+            new_dist = weight * dist
 
-        # Calculating the distance between the evaluated element to the training set
-        dist = distance(e, t)
-        if(w):
-            p = pow(dist, 2)
-            if(p>0): weight = 1/p
-            else: weight = 1/0.001
-        else: weight = 1
+            obj = {'distance': new_dist, 'class': str(t[len(t)-1])}
+            dists.append(obj)
 
-        new_dist = weight * dist
+        # Sorts the distances to get the k-nearest neighbours
+        dists.sort(key=lambda x: x['distance'])
 
-        obj = {'distance': new_dist, 'class': str(t[len(t)-1])}
-        dists.append(obj)
+        # Cutting the array for the neighbours
+        neighbours = dists[0:k]
 
-    # Sorts the distances to get the k-nearest neighbours
-    dists.sort(key=lambda x: x['distance'])
-
-    # Cutting the array for the neighbours
-    neighbours = dists[0:k]
-
-    # Counts the number of classes for the k-nearests neighbours
-    classes = {}
-    for n in neighbours:
-        if(n['class'] in classes): classes[n['class']] += 1
-        else: classes[n['class']] = 1
-    
-    # Sets the prediction to be the class with most neighbours
-    prediction = max(classes, key=classes.get)
+        # Counts the number of classes for the k-nearests neighbours
+        classes = {}
+        for n in neighbours:
+            if(n['class'] in classes): classes[n['class']] += 1
+            else: classes[n['class']] = 1
         
-    # Checks if prediction was correct
-    real_class = e[len(e)-1]
-    if(real_class == prediction): 
-        rights += 1
-        print real_class
-        print neighbours
+        # Sets the prediction to be the class with most neighbours
+        prediction = max(classes, key=classes.get)
+            
+        # Checks if prediction was correct
+        real_class = e[len(e)-1]
+        if(real_class == prediction): rights += 1
 
-percentage = float(rights)/len(evaluation) * 100
-evaluations.append(percentage)
-print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
+    percentage = float(rights)/len(evaluation) * 100
+    evaluations.append(percentage)
+    print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
