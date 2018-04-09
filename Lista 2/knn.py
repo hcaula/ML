@@ -5,28 +5,25 @@ import numpy
 
 # Custom libs
 import distances
-import args
+from args import args
 from data_reader import read
 from precalcs import precalcs
 from precalcs import swap_array
 
-def knn():
+def knn(k, dataset):
     # Getting the arguments
-    arguments = args.args
-    k = arguments.k
-    distance = getattr(distances, arguments.distance)
-    dataset = read(arguments.d)
-    w = arguments.w
-    swap = arguments.swap
+    distance = getattr(distances, args.distance)
+    w = args.w
+    swap = args.swap
+    division = args.split
 
     # Shuffles dataset if it's said so
-    if (arguments.shuffle): shuffle(dataset)
-    if (arguments.distance != "euclidean"): precalcs(dataset)
+    if (args.shuffle): shuffle(dataset)
+    if (args.distance != "euclidean"): precalcs(dataset)
     if(swap): swap_array(dataset)
 
     # k-NN algorithm
     dsize = len(dataset)
-    division = 0.6
 
     # For each division (k-fold cross-validation)
     evaluations = []
