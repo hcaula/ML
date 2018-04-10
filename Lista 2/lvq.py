@@ -29,5 +29,5 @@ alpha = 0.1
 #         count = 0
 #         for x in dataset:
 #             for p in prots:
-#                 closest = 
+#                 closest_class = nn(p, dataset)
         
