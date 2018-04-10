@@ -1,6 +1,12 @@
 probabilities = {}
 ranges = []
 
+def get_classes(dataset):
+    classes = []
+    for d in dataset:
+        if(d[len(d)-1] not in classes): classes.append(d[len(d)-1])
+    return classes
+
 def precalcs(dataset):
     partials = {}
     totals = []
