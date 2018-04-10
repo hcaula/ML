@@ -15,26 +15,25 @@ repetitions = args.r
 gen_prototypes = getattr(prototypes, args.prototype)
 prots = gen_prototypes(p, dataset, classes)
 
-alpha = 0.1
+alpha = 0.05
 
-print prots
+def movement(p, x, add):
+    for attr in range(len(p)):
+        if(type(p[attr]) is int or type(p[attr]) is float):
+            change = alpha * (x[attr] - p[attr])
+            if(add): p[attr] += change
+            else: p[attr] -= change
 
-# def movement(p, x, add):
-#     for attr in p:
-#         if(add): p[attr] += alpha * (x[attr] - p[attr])
-#         else: p[attr] -= alpha * (x[attr] - p[attr])
+def lvq_1():
+    for r in range(repetitions):
+        for x in dataset:
 
-# def lvq_1():
-#     for r in range(repetitions):
-#         for x in dataset:
-#             closest_prototype = nn(x, prots)
-#             closest_class = closest_prototype['class']
-#             x_class = x[len(x)-1]
+            closest_prototype = nn(x, prots)
+            closest_class = closest_prototype['class']
+            x_class = x[len(x)-1]
 
-#             if(closest_class == x_class): movement(p, x, True)
-#             else: movement(p, x, False)
+            if(closest_class == x_class): movement(closest_prototype['elem'], x, True)
+            else: movement(closest_prototype['elem'], x, False)
 
-# # print prots
-# lvq_1()
-# print prots
+lvq_1()
         

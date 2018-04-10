@@ -7,9 +7,6 @@ def nn(x, dataset):
 
     neighbour = {}
     for d in dataset:
-        print len(d)
-        print len(x)
-        print ""
         dist = distance(x, d)
         elem = {'elem': d, 'distance': dist, 'class': d[len(d)-1]}
         if(neighbour == {} or dist < neighbour['distance']): neighbour = elem
