@@ -17,17 +17,24 @@ prots = gen_prototypes(p, dataset, classes)
 
 alpha = 0.1
 
+print prots
+
 # def movement(p, x, add):
-#     new_point = p
 #     for attr in p:
-#         if(add): new_point[attr] += alpha * (x[attr] - p[attr])
-#         else: new_point[attr] -= alpha * (x[attr] - p[attr])
-#     return new_point
+#         if(add): p[attr] += alpha * (x[attr] - p[attr])
+#         else: p[attr] -= alpha * (x[attr] - p[attr])
 
 # def lvq_1():
-#     for r in range(repetitions)
-#         count = 0
+#     for r in range(repetitions):
 #         for x in dataset:
-#             for p in prots:
-#                 closest_class = nn(p, dataset)
+#             closest_prototype = nn(x, prots)
+#             closest_class = closest_prototype['class']
+#             x_class = x[len(x)-1]
+
+#             if(closest_class == x_class): movement(p, x, True)
+#             else: movement(p, x, False)
+
+# # print prots
+# lvq_1()
+# print prots
         

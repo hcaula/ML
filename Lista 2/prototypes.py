@@ -27,4 +27,7 @@ def limited(n, dataset, classes):
                 if(attr >= len(prototypes[c][p])): prototypes[c][p].append(0)
                 prototypes[c][p][attr] = elem
 
-    return prototypes
+    linear_list = []
+    for i in range(len(prototypes)):
+        for j in range(len(prototypes[i])): linear_list.append(prototypes[i][j])
+    return linear_list
