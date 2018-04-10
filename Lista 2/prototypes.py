@@ -1,18 +1,30 @@
 # Module for generating prototypes
-import random
+from random import randint
 
 # Generates random attributes limited to the max and min of the dataset
-def limited(n, dataset):
+def limited(n, dataset, classes):
     prototypes = []
-    for attr in range(len(dataset[0])):
+    sample = dataset[0]
+
+    # For each attribute for a sample in the dataset
+    for attr in range(len(sample)):
         max_attr = max(dataset, key=lambda x: x[attr])[attr]
         min_attr = min(dataset, key=lambda x: x[attr])[attr]
-        for i in range(n):
-            if(len(prototypes) <= i): prototypes.append([])
-            if(len(prototypes[i]) <= attr): prototypes[i].append(0)
-            
-            # If the attribute is a number, generate a random. Otherwise, get the sample's attribute.
-            if(type(dataset[0][attr]) is int or type(dataset[0][attr]) is float):
-                prototypes[i][attr] = random.randint(int(min_attr), int(max_attr))
-            else: prototypes[i][attr] = dataset[0][attr]
+
+        # For each possible class
+        for c in range(len(classes)): 
+            if(c >= len(prototypes)): prototypes.append([])
+
+            # For each number of prototype
+            for p in range(n):
+                if(p >= len(prototypes[c])): prototypes[c].append([])
+
+                elem = 0
+                if(type(sample[attr]) is int or type(sample[attr]) is float): elem = randint(int(min_attr), int(max_attr))
+                elif(attr < len(sample)-1): elem = sample[attr]
+                else: elem = classes[c]
+
+                if(attr >= len(prototypes[c][p])): prototypes[c][p].append(0)
+                prototypes[c][p][attr] = elem
+
     return prototypes
