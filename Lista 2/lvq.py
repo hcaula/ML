@@ -16,17 +16,15 @@ classes = get_classes(dataset)
 repetitions = args.r
 window = args.window
 division = args.split
-
-distance = getattr(distances, args.distance)
-
-if (args.shuffle): shuffle(dataset)
+repetitions = args.repetitions
 
 training_size_index = int(len(dataset) * division)
 training = dataset[0 : training_size_index]
 evaluation = dataset[training_size_index: len(dataset)]
 
-gen_prototypes = getattr(prototypes, args.prototype)
-prots = gen_prototypes(p, training, classes)
+distance = getattr(distances, args.distance)
+
+if (args.shuffle): shuffle(dataset)
 
 alpha = 0.01
 e = 2
@@ -48,7 +46,7 @@ def movement(p, x, add, e=1):
             else: p[attr] -= change
 
 
-def lvq_1():
+def lvq_1(prots):
     for r in range(repetitions):
         for x in dataset:
 
@@ -60,9 +58,9 @@ def lvq_1():
             else: movement(closest_prototype['elem'], x, False)
 
     print "LVQ 1 RESULTS:"
-    knn(k, prots, evaluation)
+    return {'results': knn(k, prots, evaluation), 'prots': prots}
         
-def lvq_2_1():
+def lvq_2_1(prots):
     prots_2_1 = prots[:]
     for r in range(repetitions):
         for x in dataset:
@@ -88,9 +86,9 @@ def lvq_2_1():
                 movement(other_class, x, False)
 
     print "LVQ 2.1 RESULTS:"
-    knn(k, prots_2_1, evaluation)
+    return knn(k, prots_2_1, evaluation)
 
-def lvq_3():
+def lvq_3(prots):
     prots_3 = prots[:]
     for r in range(repetitions):
         for x in dataset:
@@ -120,12 +118,25 @@ def lvq_3():
                     movement(other_class, x, True, e=e)
 
     print "LVQ 3 RESULTS:"
-    knn(k, prots_3, evaluation)
+    return knn(k, prots_3, evaluation)
 
 
 def main():
-    lvq_1()
-    lvq_2_1()
-    lvq_3() 
-    
+    percentages = [[], [], []]
+    for i in range(repetitions):
+        gen_prototypes = getattr(prototypes, args.prototype)
+        prots = gen_prototypes(p, training, classes)
+
+        print "Repetition " + str(i)
+        lvq_1_res = lvq_1(prots)
+
+        percentages[0].append(lvq_1_res['results'])
+        modified_prots = lvq_1_res['prots']
+
+        percentages[1].append(lvq_2_1(modified_prots))
+        percentages[2].append(lvq_3(modified_prots))
+        print ""
+
+    print "All rates: "
+    print percentages
 main()

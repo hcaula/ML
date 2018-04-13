@@ -53,3 +53,4 @@ def knn(k, training, evaluation):
 
     percentage = float(rights)/len(evaluation) * 100
     print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
+    return percentage

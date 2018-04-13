@@ -14,6 +14,7 @@ parser.add_argument('-p', default=1, type=int, help='The number of prototypes pe
 parser.add_argument('-r', default=1, type=int, help='The number of repetions for each LVQ')
 parser.add_argument('-window', default=0.6, type=limit_split, help='The weight for the window rule')
 parser.add_argument('-split', default=0.66, type=limit_split, help='The percentage for the training set')
+parser.add_argument('-repetitions', default=1, type=int, help="How many times should we run ALL LVQ's")
 parser.add_argument('-w', action='store_true', help='If the distance should be weighted or not')
 parser.add_argument('-distance', default='euclidean', choices=['euclidean', 'vdm', 'hvdm'], help='The type of distance used for calculations')
 parser.add_argument('-prototype', default='limited', choices=['limited'], help='The way the first prototypes should be generated')

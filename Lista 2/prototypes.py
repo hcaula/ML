@@ -1,6 +1,6 @@
 # Module for generating prototypes
 from random import randint
-
+        
 # Generates random attributes limited to the max and min of the dataset
 def limited(n, dataset, classes):
     prototypes = []
