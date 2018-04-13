@@ -26,6 +26,7 @@ training = dataset[0 : training_size_index]
 evaluation = dataset[training_size_index: len(dataset)]
 
 alpha = 0.01
+e = 2
 
 def window_rule(x, m, n):
     s = (1-window)/(1+window)
@@ -36,10 +37,10 @@ def window_rule(x, m, n):
     if(min_dist > s): return True
     else: return False
 
-def movement(p, x, add):
+def movement(p, x, add, e=1):
     for attr in range(len(p)):
         if(type(p[attr]) is int or type(p[attr]) is float):
-            change = alpha * (x[attr] - p[attr])
+            change = e * alpha * (x[attr] - p[attr])
             if(add): p[attr] += change
             else: p[attr] -= change
 
@@ -59,7 +60,7 @@ def lvq_2_1():
     prots_2_1 = prots[:]
     for r in range(repetitions):
         for x in dataset:
-            closest_prototypes = nn(x, 2, prots)
+            closest_prototypes = nn(x, 2, prots_2_1)
             m = closest_prototypes[0]['elem']
             n = closest_prototypes[1]['elem']
 
@@ -80,8 +81,30 @@ def lvq_2_1():
                 movement(same_class, x, True)
                 movement(other_class, x, False)
 
+def lvq_3():
+    for r in range(repetitions):
+        for x in dataset:
+            closest_prototypes = nn(x, 2, prots)
+            m = closest_prototypes[0]['elem']
+            n = closest_prototypes[1]['elem']
 
-lvq_1()
-print prots
-lvq_2_1()
-print prots
+            m_class = closest_prototypes[0]['class']
+            n_class = closest_prototypes[1]['class']
+            x_class = x[len(x)-1]
+
+            same_class = m
+            if(m_class == x_class):
+                same_class = m
+                other_class = n
+            elif(n_class == x_class): 
+                same_class = n
+                other_class = m
+            else: same_class = False
+
+            if(window_rule(x,m,n) and same_class):
+                if(m_class != n_class):
+                    movement(same_class, x, True)
+                    movement(other_class, x, False)
+                else:
+                    movement(same_class, x, True, e=e)
+                    movement(other_class, x, True, e=e)
