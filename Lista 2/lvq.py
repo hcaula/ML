@@ -55,6 +55,9 @@ def lvq_1():
 
             if(closest_class == x_class): movement(closest_prototype['elem'], x, True)
             else: movement(closest_prototype['elem'], x, False)
+
+    print "LVQ 1 RESULTS:"
+    knn(k, prots, evaluation)
         
 def lvq_2_1():
     prots_2_1 = prots[:]
@@ -81,10 +84,14 @@ def lvq_2_1():
                 movement(same_class, x, True)
                 movement(other_class, x, False)
 
+    print "LVQ 2.1 RESULTS:"
+    knn(k, prots_2_1, evaluation)
+
 def lvq_3():
+    prots_3 = prots[:]
     for r in range(repetitions):
         for x in dataset:
-            closest_prototypes = nn(x, 2, prots)
+            closest_prototypes = nn(x, 2, prots_3)
             m = closest_prototypes[0]['elem']
             n = closest_prototypes[1]['elem']
 
@@ -108,3 +115,14 @@ def lvq_3():
                 else:
                     movement(same_class, x, True, e=e)
                     movement(other_class, x, True, e=e)
+
+    print "LVQ 3 RESULTS:"
+    knn(k, prots_3, evaluation)
+
+
+def main():
+    lvq_1()
+    lvq_2_1()
+    lvq_3() 
+    
+main()

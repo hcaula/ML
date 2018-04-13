@@ -2,11 +2,11 @@
 import distances
 from args import args
 
-def nn(x, k, dataset):
+def nn(x, p, dataset):
     distance = getattr(distances, args.distance)
 
     neighbours = []
-    for i in range(k):
+    for i in range(p):
         neighbours.append({})
 
     for d in dataset:
