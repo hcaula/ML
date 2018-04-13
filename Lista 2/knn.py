@@ -1,6 +1,5 @@
 # External libs
 from time import time
-from random import shuffle
 import numpy
 
 # Custom libs
@@ -14,8 +13,6 @@ def knn(k, training, evaluation):
     # Getting the arguments
     distance = getattr(distances, args.distance)
     w = args.w
-
-    # Shuffles dataset if it's said so
 
     rights = 0
     for e in evaluation:

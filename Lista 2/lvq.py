@@ -6,6 +6,7 @@ from knn import knn
 from data_reader import read
 from args import args
 from nn import nn
+from random import shuffle
 
 # Getting the arguments
 dataset = read(args.d)
@@ -17,6 +18,8 @@ window = args.window
 division = args.split
 
 distance = getattr(distances, args.distance)
+
+if (args.shuffle): shuffle(dataset)
 
 training_size_index = int(len(dataset) * division)
 training = dataset[0 : training_size_index]
