@@ -2,13 +2,22 @@
 import distances
 from args import args
 
-def nn(x, dataset):
+def nn(x, k, dataset):
     distance = getattr(distances, args.distance)
 
-    neighbour = {}
+    neighbours = []
+    for i in range(k):
+        neighbours.append({})
+
     for d in dataset:
         dist = distance(x, d)
         elem = {'elem': d, 'distance': dist, 'class': d[len(d)-1]}
-        if(neighbour == {} or dist < neighbour['distance']): neighbour = elem
+
+        count = 0
+        for n in neighbours:
+            if(n == {} or dist < n['distance']):
+                neighbours[count] = elem
+                break
+            count += 1
     
-    return neighbour
+    return neighbours

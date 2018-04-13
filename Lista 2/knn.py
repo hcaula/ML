@@ -10,27 +10,12 @@ from data_reader import read
 from precalcs import precalcs
 from precalcs import swap_array
 
-def knn(k, dataset):
+def knn(k, training, evaluation):
     # Getting the arguments
     distance = getattr(distances, args.distance)
     w = args.w
-    swap = args.swap
-    division = args.split
 
     # Shuffles dataset if it's said so
-    if (args.shuffle): shuffle(dataset)
-    if (args.distance != "euclidean"): precalcs(dataset)
-    if(swap): swap_array(dataset)
-
-    # k-NN algorithm
-    dsize = len(dataset)
-
-    # For each division (k-fold cross-validation)
-    evaluations = []
-
-    training_size_index = int(dsize * division)
-    training = dataset[0 : training_size_index]
-    evaluation = dataset[training_size_index: dsize]
 
     rights = 0
     for e in evaluation:
@@ -70,5 +55,4 @@ def knn(k, dataset):
         if(real_class == prediction): rights += 1
 
     percentage = float(rights)/len(evaluation) * 100
-    evaluations.append(percentage)
     print 'Right predictions: ' + str(rights) + ' out of ' + str(len(evaluation)) + ' (' + str(round(percentage, 2)) + '%)'
