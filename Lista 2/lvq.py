@@ -16,14 +16,14 @@ repetitions = args.r
 window = args.window
 division = args.split
 
-gen_prototypes = getattr(prototypes, args.prototype)
-prots = gen_prototypes(p, dataset, classes)
-
 distance = getattr(distances, args.distance)
 
 training_size_index = int(len(dataset) * division)
 training = dataset[0 : training_size_index]
 evaluation = dataset[training_size_index: len(dataset)]
+
+gen_prototypes = getattr(prototypes, args.prototype)
+prots = gen_prototypes(p, training, classes)
 
 alpha = 0.01
 e = 2
