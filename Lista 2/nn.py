@@ -13,11 +13,10 @@ def nn(x, k, dataset):
         dist = distance(x, d)
         elem = {'elem': d, 'distance': dist, 'class': d[len(d)-1]}
 
-        count = 0
-        for n in neighbours:
-            if(n == {} or dist < n['distance']):
-                neighbours[count] = elem
-                break
-            count += 1
+        for n in range(len(neighbours)):
+            neighbour = neighbours[n]
+            if(neighbour == {} or dist < neighbour['distance']):
+                neighbours[n] = elem
+                n = len(neighbours)+1
     
     return neighbours
