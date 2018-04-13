@@ -16,7 +16,7 @@ classes = get_classes(dataset)
 repetitions = args.r
 window = args.window
 division = args.split
-repetitions = args.repetitions
+gen_repetitions = args.repetitions
 
 training_size_index = int(len(dataset) * division)
 training = dataset[0 : training_size_index]
@@ -123,7 +123,7 @@ def lvq_3(prots):
 
 def main():
     percentages = [[], [], []]
-    for i in range(repetitions):
+    for i in range(gen_repetitions):
         gen_prototypes = getattr(prototypes, args.prototype)
         prots = gen_prototypes(p, training, classes)
 
