@@ -7,6 +7,7 @@ from data_reader import read
 from args import args
 from nn import nn
 from random import shuffle
+from numpy import mean
 
 # Getting the arguments
 dataset = read(args.d)
@@ -18,13 +19,13 @@ window = args.window
 division = args.split
 gen_repetitions = args.repetitions
 
-training_size_index = int(len(dataset) * division)
-training = dataset[0 : training_size_index]
-evaluation = dataset[training_size_index: len(dataset)]
-
 distance = getattr(distances, args.distance)
 
 if (args.shuffle): shuffle(dataset)
+
+training_size_index = int(len(dataset) * division)
+training = dataset[0 : training_size_index]
+evaluation = dataset[training_size_index: len(dataset)]
 
 alpha = 0.01
 e = 2
@@ -123,6 +124,7 @@ def lvq_3(prots):
 
 def main():
     percentages = [[], [], []]
+    means = [0, 0, 0]
     for i in range(gen_repetitions):
         gen_prototypes = getattr(prototypes, args.prototype)
         prots = gen_prototypes(p, training, classes)
@@ -137,6 +139,21 @@ def main():
         percentages[2].append(lvq_3(modified_prots))
         print ""
 
-    print "All rates: "
-    print percentages
+    # print "VANILLA K-NN RESULTS: "
+    # knn_res = knn(k, training, evaluation)
+    # print ""
+
+    means[0] = mean(percentages[0])
+    means[1] = mean(percentages[1])
+    means[2] = mean(percentages[2])
+
+    print "Means: (p = " + str(p) + ")"
+    print str(means[0])
+    print str(means[1])
+    print str(means[2])
+    print ""
+    print "__________________"
+    print ""
+    # print str(knn_res)
+
 main()
